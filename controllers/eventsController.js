@@ -7,7 +7,7 @@ const getEvents = async( req, resp = response ) => {
       const events = await EventModel.find()
                                      .populate('user','name');
 
-      resp.status(200).json({
+      return resp.status(200).json({
             ok:true,
             events
       });
@@ -21,14 +21,14 @@ const createEvent = async ( req, resp = response ) => {
             event.user = req.uid
             const eventSaved = await event.save();
          
-            resp.status(201).json({
+            return resp.status(201).json({
                         ok:true,
                         eventSaved
             });
 
       } catch (error) {
             console.log(error);
-            resp.status(500).json({
+            return resp.status(500).json({
                   ok:false,
                   msg:'Hable con el administrador'
             });
@@ -65,14 +65,14 @@ const updateEvent = async( req, resp = response ) => {
 
             const  eventUpdated = await EventModel.findByIdAndUpdate( eventId, eventUpdatedBody, { new: true } );
 
-            resp.json({
+            return resp.json({
                   ok:true,
                   event: eventUpdated
             });
 
       } catch (error) {
             console.log(error);
-            resp.status(500).json({
+            return resp.status(500).json({
                   ok:false,
                   msg:'Hable con el administrador'
             });
@@ -102,11 +102,11 @@ const deleteEvent = async( req, resp = response ) => {
             }
             await EventModel.findByIdAndDelete( eventId );
 
-            resp.json({ok: true});
+            return resp.json({ok: true});
 
       } catch (error) {
             console.log(error);
-            resp.status(500).json({
+            return resp.status(500).json({
                   ok:false,
                   msg:'Hable con el administrador'
             });
